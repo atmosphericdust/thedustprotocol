@@ -56,30 +56,34 @@
   var slider = document.querySelector("[data-slider]");
   if (slider) {
     var slides = slider.querySelectorAll(".slide");
-    var bar = slider.querySelector("[data-progress]");
+    var fill = slider.querySelector("[data-progress]");
     var current = slider.querySelector("[data-current]");
     var i = 0, timer = null, DURATION = 7000;
     var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    function pad(n) { return (n < 10 ? "0" : "") + n; }
+
     function show(n) {
       i = (n + slides.length) % slides.length;
+
       Array.prototype.forEach.call(slides, function (s, k) {
         s.classList.toggle("is-active", k === i);
         s.setAttribute("aria-hidden", String(k !== i));
       });
-      current.textContent = "0" + (i + 1);
-      run();
-    }
 
-    function run() {
-      if (reduced) return;
-      bar.style.transition = "none";
-      bar.style.width = "0%";
-      void bar.offsetWidth;
-      bar.style.transition = "width " + DURATION + "ms linear";
-      bar.style.width = "100%";
+      /* the bar tracks position in the set, as on the original */
+      fill.style.transform = "scaleX(" + ((i + 1) / slides.length) + ")";
+      current.textContent = pad(i + 1);
+
+      /* a video slide only starts once it is on screen */
+      var frame = slides[i].querySelector("iframe[data-src]");
+      if (frame) {
+        frame.src = frame.getAttribute("data-src");
+        frame.removeAttribute("data-src");
+      }
+
       clearTimeout(timer);
-      timer = setTimeout(function () { show(i + 1); }, DURATION);
+      if (!reduced) timer = setTimeout(function () { show(i + 1); }, DURATION);
     }
 
     slider.querySelector("[data-next]").addEventListener("click", function () { show(i + 1); });
@@ -88,9 +92,10 @@
       if (e.key === "ArrowRight") show(i + 1);
       if (e.key === "ArrowLeft") show(i - 1);
     });
+
     document.body.classList.add("is-slider");
     document.querySelector(".masthead").classList.add("over");
-    run();
+    show(0);
   }
 
   /* back to top */

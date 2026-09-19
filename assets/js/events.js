@@ -1,8 +1,3 @@
-/* Event data, taken from the portfolio items on the original site.
-   kind: "conferences" or "performances" (drives the filter buttons)
-   url:  detail page. These point at the WordPress portfolio pages and will
-         break when that site goes away — set to "" for no link. */
-
 window.DUST_EVENTS = [
   {
     year: "2026",
