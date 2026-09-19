@@ -53,8 +53,36 @@
           <p>We collaborate with institutions, festivals, and independent producers to stage atmospheric opera and physics-based performance works.</p>
         </div>
         <div class="enquiry__contact">
-          <a class="mailto" href="mailto:hello@example.com">hello@example.com</a>
-          <p class="note">Write to us with what you are planning and when.</p>
+          <form class="form" action="https://api.web3forms.com/submit" method="POST" data-form>
+            <input type="hidden" name="access_key" value="a3cf3967-b21e-4d79-aefb-d82f3e824282">
+            <input type="hidden" name="subject" value="Enquiry from thedustprotocol.com">
+            <input type="checkbox" name="botcheck" class="sr-only" style="display:none" tabindex="-1" autocomplete="off">
+
+            <div class="form__row">
+              <div>
+                <label class="sr-only" for="name">Name</label>
+                <input id="name" name="name" type="text" placeholder="Name" autocomplete="name" required>
+              </div>
+              <div>
+                <label class="sr-only" for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="Email" autocomplete="email" required>
+              </div>
+            </div>
+
+            <div>
+              <label class="sr-only" for="title">Title</label>
+              <input id="title" name="title" type="text" placeholder="Title">
+            </div>
+
+            <div>
+              <label class="sr-only" for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Message" required></textarea>
+            </div>
+
+            <button class="send" type="submit">Send</button>
+            <p class="form__status" data-status role="status" aria-live="polite"></p>
+            <p class="note">Messages are delivered through Web3Forms.</p>
+          </form>
         </div>
       </div>
     </div>

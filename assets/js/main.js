@@ -103,6 +103,42 @@
     show(0);
   }
 
+  /* enquiry form — posts to Web3Forms, answers on the page */
+  var form = document.querySelector("[data-form]");
+  if (form && window.fetch) {
+    var status = form.querySelector("[data-status]");
+    var button = form.querySelector("button[type=submit]");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      button.disabled = true;
+      status.removeAttribute("data-state");
+      status.textContent = "Sending…";
+
+      fetch(form.action, {
+        method: "POST",
+        headers: { "Accept": "application/json" },
+        body: new FormData(form)
+      })
+        .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+        .then(function (res) {
+          if (res.ok) {
+            form.reset();
+            status.setAttribute("data-state", "ok");
+            status.textContent = "Thank you. We have your message and will reply by email.";
+          } else {
+            throw new Error(res.d && res.d.message);
+          }
+        })
+        .catch(function (err) {
+          status.setAttribute("data-state", "fail");
+          status.textContent = "That did not send. Email us instead, or try again in a moment.";
+          if (window.console) console.error(err);
+        })
+        .then(function () { button.disabled = false; });
+    });
+  }
+
   /* back to top */
   var top = document.querySelector(".totop");
   if (top) {
