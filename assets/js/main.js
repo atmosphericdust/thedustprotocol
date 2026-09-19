@@ -40,6 +40,11 @@
       : '<li class="events__empty">No events in this category yet.</li>';
   }
 
+  /* every list starts populated — "All Categories" is the default */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-events]"), function (list) {
+    render(list, data);
+  });
+
   var buttons = document.querySelectorAll("[data-filter]");
   Array.prototype.forEach.call(buttons, function (btn) {
     btn.addEventListener("click", function () {
